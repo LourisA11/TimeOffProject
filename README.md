@@ -36,6 +36,8 @@ This project includes a structured and relational MySQL schema to:
 
 
 
-![ERD Diagram][Assignment3-E-R-Model.pdf](https://github.com/user-attachments/files/19783899/Assignment3-E-R-Model.pdf)
+![ERD Diagram] <img width="829" alt="Screenshot 2025-04-16 at 4 09 40 PM" src="https://github.com/user-attachments/assets/66fe4ce9-9dac-45e0-9059-f15580be5394" />
+
+![Relations] <img width="585" alt="Screenshot 2025-04-16 at 4 07 49 PM" src="https://github.com/user-attachments/assets/8ed9612c-0a57-4530-8489-9b874db5a476" />
 
 ---
