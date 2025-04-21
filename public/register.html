@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html>
 <body>
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
 <div class="topnav">
     <a class="active" href="#home">Home</a>
     <a href="register.html">Register Account</a>
-    <a href="login.html">Login</a>
+    <a href="login.html">Login</a>s
     <a href="post.html">Create Post</a>
  </div>
 
 <div>
-<form>
+<form id="registerForm">
     <label for="username">Username:</label><br>
     <input type="text" id="username" name="username"><br>
+
     <label for="password">Password:</label><br>
     <input type="password" id="password" name="password"><br>
+    
+    <label for="fName">First Name:</label><br>
+    <input type="text" id="firstName" name="firstName"><br>
+
+    <label for="lName">Last Name:</label><br>
+    <input type="text" id="lastName" name="lastName"><br>
+    
+
     <input type="submit" value="Register">
 </form>
 </div>
