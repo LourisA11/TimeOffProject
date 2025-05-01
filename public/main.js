@@ -11,7 +11,6 @@ console.log("Login.js loaded!");
 
 // function User(username, password ){
   
-}
 
 class User{ 
   constructor(userId, username, email, password, firstName,lastName){

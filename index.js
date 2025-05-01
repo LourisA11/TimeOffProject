@@ -4,7 +4,7 @@ const app = express()
 app.use(express.json())
 
 const userRoutes = require("./server/routes/user")
-const postRoutes = require("./server/routes/post")
+const postRoutes = require("./server/routes/shiftReq")
 
 //CORS middleware
 app.use(function(req, res, next) {
