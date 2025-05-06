@@ -16,11 +16,12 @@ async function createShiftRequestTable() {
 }
 createShiftRequestTable();
 
-// CRUD Operations for ShiftRequest
+
 async function getAllShiftRequests() {
   let sql = `SELECT * FROM ShiftRequest`;
   return await con.query(sql);
 }
+
 
 async function createShiftRequest(shift) {
   let sql = `
@@ -30,4 +31,29 @@ async function createShiftRequest(shift) {
   await con.query(sql);
 }
 
-module.exports = { getAllShiftRequests, createShiftRequest };
+
+async function updateShiftRequestStatus(RequestID, Status) {
+  let sql = `
+    UPDATE ShiftRequest
+    SET Status = '${Status}'
+    WHERE RequestID = ${RequestID}
+  `;
+  await con.query(sql);
+}
+
+
+async function deleteShiftRequest(RequestID) {
+  let sql = `
+    DELETE FROM ShiftRequest
+    WHERE RequestID = ${RequestID}
+  `;
+  await con.query(sql);
+}
+
+module.exports = {
+  getAllShiftRequests,
+  getShiftRequestByID,
+  createShiftRequest,
+  updateShiftRequestStatus,
+  deleteShiftRequest
+};
