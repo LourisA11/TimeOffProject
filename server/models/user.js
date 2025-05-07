@@ -19,6 +19,7 @@ async function createTable() {
   }
   // USER Example:
   const user = {
+
     Username: "Bobbyiscool",
     Email: "b@b",
     Password: "cathysucks"
@@ -41,5 +42,45 @@ async function createTable() {
   }
   
   // CREATE in CRUD - Registering a user
+  async function register(user) {
+    const cUser = await userExists(user.Username)
+    if(cUser.length > 0) throw Error("Username already in use!")
   
-  module.exports = { getAllUsers, login }
+    let sql = `
+      INSERT INTO User(password, username, email, firstName, lastName)
+      VALUES("${user.Password}", "${user.Username}", "${user.Email}", "${user.FirstName}", "${user.LastName}")
+    `
+    await con.query(sql)
+  
+    return await login(user)
+  }
+  
+  
+  async function editUsername(user) {
+    let sql = `
+      UPDATE User SET
+      username = "${user.username}"
+      WHERE userId = ${user.userId}
+    `
+    await con.query(sql)
+    const currentUser = await userExists(user.username)
+    return currentUser[0]
+  }
+  const users = 
+    {
+      userId: 123, 
+      username: "lalala",
+      firstName: "La",
+      lastName: "al",
+      email: "la@al",
+      password: "cat"
+    }
+    async function deleteAccount(user) {
+      let sql = `
+        DELETE FROM user
+        WHERE userId = ${user.userId}
+      `
+      await con.query(sql)
+    }
+  
+  module.exports = { getAllUsers, login, register, editUsername, deleteAccount }

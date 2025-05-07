@@ -52,7 +52,6 @@ async function deleteShiftRequest(RequestID) {
 
 module.exports = {
   getAllShiftRequests,
-  getShiftRequestByID,
   createShiftRequest,
   updateShiftRequestStatus,
   deleteShiftRequest
