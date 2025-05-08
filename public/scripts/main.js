@@ -1,18 +1,18 @@
 import { getCurrentUser,removeCurrentUser } from "./user.js";
 const nav= document.querySelector('.topnav')
+const user = getCurrentUser();
 if(getCurrentUser()){
   nav.innerHTML=`
    <ul>
-    <a class="active" href="#home">Home</a>
-    <a href="register.html">Register Account</a>
-    <a href="login.html">Login</a>
+    <a href="home.html">Home</a>
     <a href="post.html">Create Post</a>
+    <a href="#" id="logout">Logout</a>
    </ul>`
 
 }else{
   nav.innerHTML=`
    <ul>
-    <a class="active" href="#home">Home</a>
+    <a href="home.html">Home</a>
     <a href="register.html">Register Account</a>
     <a href="login.html">Login</a>
     </ul>`
