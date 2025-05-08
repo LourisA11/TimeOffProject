@@ -22,32 +22,12 @@ router
   }
 })
 
-.post('/register', async (req, res) => {
+.post("/register", async (req, res) => {
   try {
-    const user = await User.register(req.body)
-    res.send({...user, password: undefined})
-  } catch(err) {
-    res.status(401).send({message: err.message})
+    const user = await User.register(req.body);
+    res.send(user)
+  } catch (err) {
+    res.status(400).send({ message: err.message });
   }
-})
-
-.put('/update', async (req, res) => {
-  try {
-    console.log(req.body)
-    const user = await User.editUsername(req.body)
-    res.send({...user, password: undefined})
-  } catch(err) {
-    res.status(401).send({message: err.message})
-  }
-})
-
-.delete('/deleteAccount', async (req, res) => {
-  try {
-    await User.deleteAccount(req.body)
-    res.send({success: "HOW DARE YOU!!! I did everything for you!!!!! You will come to regret this...this is a THREAT!!! >:(((("})
-  } catch(err) {
-    res.status(401).send({message: err.message})
-  }
-})
-
+});
 module.exports = router
