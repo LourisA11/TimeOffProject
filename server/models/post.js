@@ -43,4 +43,18 @@ async function deletePost(postID) {
   return { message: "Post deleted successfully" };
 }
 
-module.exports = { getPostsByUser, createPost, deletePost };
+async function editPost(postID, post) {
+  if (!postID || !post.title || !post.content) {
+    throw new Error("Missing required fields (postId, title, content)");
+  }
+
+  let sql = `
+    UPDATE Post
+    SET Title = "${post.title}", Content = "${post.content}"
+    WHERE PostID = ${postID}
+  `;
+  await con.query(sql);
+  return { success: "Post updated successfully" };
+}
+
+module.exports = { getPostsByUser, createPost, deletePost ,editPost };

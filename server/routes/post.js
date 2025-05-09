@@ -52,6 +52,18 @@ router.delete('/deletePost', async (req, res) => {
     }
 });
 
+router.post('/editPost', async (req, res) => {
+  try {
+    const { postId, title, content } = req.body;
+    if (!postId || !title || !content) {
+      throw new Error("Missing fields for edit");
+    }
 
+    await Post.editPost({ postId, title, content });
+    res.send({ success: "Post edited successfully" });
+  } catch (err) {
+    res.status(401).send({ message: err.message });
+  }
+});
 
 module.exports = router;

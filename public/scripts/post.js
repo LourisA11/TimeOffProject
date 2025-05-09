@@ -125,3 +125,36 @@ function deletePost(postID) {
 
 
 }
+function editPost(postID) {
+  const postTitle = document.getElementById("title").value;
+  const postContent = document.getElementById("content").value;
+
+  if (validString(postTitle) || validString(postContent)) {
+    alert("Title or Content cannot be blank.");
+  } else {
+    const post = {
+      title: postTitle,
+      content: postContent
+    };
+
+    fetch(`http://localhost:3000/posts/editPost/${postID}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(post)
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          loadAllPosts();
+        } else {
+          alert("Edit failed");
+        }
+      })
+      .catch(err => {
+        console.error("Error editing:", err);
+        alert(err.message);
+      });
+  }
+}
