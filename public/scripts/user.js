@@ -18,9 +18,10 @@ export function getCurrentUser() {
 // let currentUser = getCurrentUser()
 // let userId = currentUser.userId
 
+
 export function removeCurrentUser() {
-  localStorage.removeItem('user')
-  window.location.href = "login.html"
+  localStorage.removeItem("user");  
+  window.location.href = "login.html";
 }
 
 

@@ -4,14 +4,10 @@
 
 <div id="error" style="color: red;"></div>
 <div id="message" style="color: red;"></div>
-
-
 <body>
     <head>
         <link rel="stylesheet" href="style.css">
     </head>
-
-
 
     <div class="topnav">
         <a href="home.html">Home</a>
@@ -19,11 +15,7 @@
         <a href="login.html">Login</a>
         <a href="post.html">Create Post</a>
     </div>
-<div>
 
-</div>
-
-</body>
  <div>
 <form id="postForm">
     <label for="title">Title:</label><br>
@@ -37,10 +29,15 @@
 </div>
 
     <div id="posts"></div>
+    <div id="editModal" style="display: none;">
+        <input type="text" id="editTitle">
+        <textarea id="editContent"></textarea>
+        <button id="saveEdit">Save</button>
+        
+      </div>
 
 
 </div> 
-
 
 </div>
 

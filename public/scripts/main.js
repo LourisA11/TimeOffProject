@@ -4,8 +4,9 @@ const user = getCurrentUser();
 if(getCurrentUser()){
   nav.innerHTML=`
    <ul>
-    <a href="home.html">Home</a>
+     <a href="home.html">Home</a>
     <a href="post.html">Create Post</a>
+    <a href="profile.html">Profile</a>
     <a href="#" id="logout">Logout</a>
    </ul>`
 
@@ -29,10 +30,10 @@ export async function fetchData(route = '', data = {}, methodType) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    body: JSON.stringify(data) 
   });
   if (response.ok) {
-    return await response.json(); // parses JSON response into native JavaScript objects
+    return await response.json(); 
   } else {
     throw await response.json();
   }

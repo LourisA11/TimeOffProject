@@ -18,7 +18,7 @@ async function getAllUsers() {
   return await con.query(sql)
 }
 
-// READ in CRUD: Logging in a user
+
 async function login(user) {
   let cUser = await userExists(user.username)
   if(!cUser[0]) throw Error("Username does not exist!")
@@ -30,7 +30,7 @@ async function login(user) {
 async function userExists(username) {
   let sql = `
     SELECT * FROM User
-    WHERE UserName="${username}"
+    WHERE Username="${username}"
   `
   return await con.query(sql)
 }
@@ -45,36 +45,33 @@ async function register(user) {
     VALUES("${user.password}", "${user.username}", "${user.email}", "${user.firstName}", "${user.lastName}")
   `
   const result = await con.query(sql);
-
   let newUser = await con.query(`SELECT * FROM User WHERE UserID = ${result.insertId}`);
-
   return newUser[0];
 }
 
 
 async function editUsername(user) {
+  if (user.userId == null || user.username == null) {
+    throw new Error("Missing userId or username");
+  }
+
   let sql = `
-    UPDATE User SET
-    username = "${user.username}"
-    WHERE userId = ${user.userId}
-  `
-  await con.query(sql)
-  const currentUser = await userExists(user.username)
-  return currentUser[0]
+    UPDATE User
+    SET UserName = "${user.username}"
+    WHERE UserID = ${user.userId}
+  `;
+  const result = await con.query(sql);
+  if (result.affectedRows === 0) {
+    throw new Error("User not found or username not updated.");
+  }
+  const updatedUser = await con.query(`SELECT * FROM User WHERE UserID = ${user.userId}`);
+  return updatedUser[0];
 }
 
-// USER Example:
-const user = {
-  username: "Bobbyiscool",
-  email: "b@b",
-  password: "cathysucks",
-  firstName: "Bob",
-  lastName: "Bobby"
-}
 async function deleteAccount(user) {
   let sql = `
-    DELETE FROM user
-    WHERE userId = ${user.userId}
+    DELETE FROM User
+    WHERE UserID = ${user.userId}
   `
   await con.query(sql)
 }

@@ -13,13 +13,10 @@ async function createTable() {
 }
 createTable()
 
-async function getAllPosts() {
-  let sql = `SELECT * FROM Post ORDER BY created_at DESC`;
-  return await con.query(sql);
-}
+
 
 async function getPostsByUser(userId) {
-  let sql = `SELECT * FROM Post WHERE UserID = ${userId}`
+  let sql = `SELECT * FROM Post WHERE UserID = ${userId} ORDER BY created_at DESC`;
   return await con.query(sql)
 }
 
@@ -37,4 +34,13 @@ async function createPost(post) {
 }
 
 
-module.exports = { getAllPosts, getPostsByUser, createPost }
+
+async function deletePost(postID) {
+  if (!postID) throw new Error("Missing postId");
+
+  let sql = `DELETE FROM Post WHERE PostID = ${postID}`;
+  await con.query(sql);
+  return { message: "Post deleted successfully" };
+}
+
+module.exports = { getPostsByUser, createPost, deletePost };

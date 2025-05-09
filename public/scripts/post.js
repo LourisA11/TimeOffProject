@@ -2,12 +2,14 @@ import { getCurrentUser } from "./user.js"
 import { fetchData } from "./main.js"
 
 
+
 const user = getCurrentUser();
 if (!user) window.location.href = "login.html";
 
 window.addEventListener("DOMContentLoaded", () => {
   loadAllPosts();
 });
+
 
 let loginForm = document.getElementById('postForm')
 if(loginForm) loginForm.addEventListener('submit', Post);
@@ -37,6 +39,7 @@ function Post(e) {
         document.getElementById("message").innerHTML = "You successfully added a post!";
         document.getElementById("postForm").reset();
         addPostToPage(post);
+        loadAllPosts();
       }
     })
     .catch(err => {
@@ -52,33 +55,38 @@ function validString(word) {
 }
 
 function loadAllPosts() {
-  fetch("http://localhost:3000/posts/getPosts")
+  fetch(`http://localhost:3000/posts/${user.UserID}`)
     .then(response => response.json())
     .then(posts => {
-      if (!Array.isArray(posts)) {
-        console.error("Expected array but got:", posts);
-        document.getElementById("message")="";
-        return;
-      }
-
       const postsDiv = document.getElementById("posts");
-      postsDiv.innerHTML = "";
+      postsDiv.innerHTML = ""; // clear previous
 
       posts.forEach(post => {
         const postEl = document.createElement("div");
         postEl.innerHTML = `
+          <div class="post-card">
+             <p><strong>Post ID:</strong> ${post.PostID}</p>
           <h3>${post.Title}</h3>
           <p>${post.Content}</p>
-          <p>Posted on ${new Date(post.created_at).toLocaleString()}</p>
+          <button class="delete-post" data-id="${post.PostID}">Delete</button>
+          </div>
         `;
         postsDiv.appendChild(postEl);
       });
+      document.querySelectorAll(".delete-post").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          const postId = e.target.dataset.id;
+          deletePost(postId);
+        });
+      });
+
     })
     .catch(err => {
-      document.getElementById("message").innerText = "Failed to load posts.";
-      console.error(err);
+      document.getElementById("message").innerText = `Failed to load posts. ${err.message}`;
     });
-}
+  }
+
+
 function addPostToPage(post) {
   const postsDiv = document.getElementById("posts");
   const postEl = document.createElement("div");
@@ -91,6 +99,29 @@ function addPostToPage(post) {
   postsDiv.prepend(postEl);
 }
 
+function deletePost(postID) {
+  if (confirm("Delete this post?")) {
+    fetch(`http://localhost:3000/posts/deletePost/${postID}`, {
+      method: "DELETE"
+    })
+
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+      return res.json();
+  })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          loadAllPosts();
+        } else {
+          alert("Delete failed");
+        }
+      })
+      .catch (err=>{
+        console.error("Error deleting:", err);
+    alert(err.message);
+       })
+  }
 
 
-
+}
