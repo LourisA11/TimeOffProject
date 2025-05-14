@@ -40,29 +40,31 @@ router.post('/createPost', async (req, res) => {
 //edpost 
 
 
-router.delete('/deletePost', async (req, res) => {
-    try {
-      const postID = req.params.postID;
-      if (!postID) throw new Error("Missing postID");
-  
-      await Post.deletePost(postID);
-      res.send({ success: "Post deleted successfully" });
-    } catch (err) {
-      res.status(401).send({ message: err.message });
-    }
+router.delete('/deletePost/:postId', async (req, res) => {
+  try {
+    const postId = parseInt(req.params.postId);
+    if (!postId) throw new Error("Missing postId");
+
+    await Post.deletePost(postId);  // Make sure this works in your model
+    res.send({ success: "Post deleted successfully" });
+  } catch (err) {
+    res.status(401).send({ message: err.message });
+  }
 });
 
-router.post('/editPost', async (req, res) => {
+router.put('/editPost/:postId', async (req, res) => {
   try {
-    const { postId, title, content } = req.body;
+    const postId = parseInt(req.params.postId);
+    const { title, content } = req.body;
+
     if (!postId || !title || !content) {
-      throw new Error("Missing fields for edit");
+      throw new Error("Missing required fields: postId, title, or content.");
     }
 
     await Post.editPost({ postId, title, content });
-    res.send({ success: "Post edited successfully" });
+    res.send({ message: "Post updated successfully" });
   } catch (err) {
-    res.status(401).send({ message: err.message });
+    res.status(400).send({ message: err.message });
   }
 });
 

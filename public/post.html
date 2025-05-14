@@ -29,12 +29,14 @@
 </div>
 
     <div id="posts"></div>
-    <div id="editModal" style="display: none;">
-        <input type="text" id="editTitle">
-        <textarea id="editContent"></textarea>
-        <button id="saveEdit">Save</button>
-        
+    <div id="editModal" style="display:none; border: 1px solid #ccc; padding: 16px; margin-top: 20px;">
+        <h3>Edit Post</h3>
+        <input type="text" id="editTitle" placeholder="Edit Title"><br><br>
+        <textarea id="editContent" placeholder="Edit Content"></textarea><br><br>
+        <button id="saveEdit">Save Changes</button>
+        <button onclick="document.getElementById('editModal').style.display='none'">Cancel</button>
       </div>
+      
 
 
 </div> 

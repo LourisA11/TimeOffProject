@@ -68,6 +68,7 @@ function loadAllPosts() {
              <p><strong>Post ID:</strong> ${post.PostID}</p>
           <h3>${post.Title}</h3>
           <p>${post.Content}</p>
+          <button class="edit-post" data-id="${post.PostID}">Edit</button>
           <button class="delete-post" data-id="${post.PostID}">Delete</button>
           </div>
         `;
@@ -77,6 +78,12 @@ function loadAllPosts() {
         btn.addEventListener("click", (e) => {
           const postId = e.target.dataset.id;
           deletePost(postId);
+        });
+      });
+      document.querySelectorAll(".edit-post").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          const postId = e.target.dataset.id;
+          showEditForm(postId);
         });
       });
 
@@ -99,32 +106,26 @@ function addPostToPage(post) {
   postsDiv.prepend(postEl);
 }
 
-function deletePost(postID) {
-  if (confirm("Delete this post?")) {
-    fetch(`http://localhost:3000/posts/deletePost/${postID}`, {
-      method: "DELETE"
-    })
-
+function deletePost(postId) {
+  fetch(`http://localhost:3000/posts/deletePost/${postId}`, {
+    method: "DELETE"
+  })
     .then(res => {
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-      return res.json();
-  })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          loadAllPosts();
-        } else {
-          alert("Delete failed");
-        }
-      })
-      .catch (err=>{
-        console.error("Error deleting:", err);
-    alert(err.message);
-       })
-  }
-
-
+      return res.json();  
+    })
+    .then(data => {
+      console.log("Deleted successfully:", data);
+      loadAllPosts();
+    })
+    .catch(err => {
+      console.error("Error deleting:", err);
+      document.getElementById("message").innerText = err.message;
+    });
 }
+
+
+
 function editPost(postID) {
   const postTitle = document.getElementById("title").value;
   const postContent = document.getElementById("content").value;
@@ -157,4 +158,39 @@ function editPost(postID) {
         alert(err.message);
       });
   }
+}
+
+function showEditForm(postId) {
+  const postCard = document.querySelector(`[data-id="${postId}"]`).closest(".post-card");
+  const title = postCard.querySelector("h3").innerText;
+  const content = postCard.querySelector("p:nth-of-type(2)").innerText;
+
+  document.getElementById("editTitle").value = title;
+  document.getElementById("editContent").value = content;
+  document.getElementById("editModal").style.display = "block";
+
+  document.getElementById("saveEdit").onclick = () => {
+    const newTitle = document.getElementById("editTitle").value;
+    const newContent = document.getElementById("editContent").value;
+
+    fetch(`http://localhost:3000/posts/editPost/${postId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        title: newTitle,
+        content: newContent
+      })
+    })
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+        return res.json();
+      })
+      .then(() => {
+        document.getElementById("editModal").style.display = "none";
+        loadAllPosts();
+      })
+      .catch(err => alert("Edit failed: " + err.message));
+  };
 }
